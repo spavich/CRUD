@@ -42,17 +42,30 @@ class App extends Component{
 		});
 	};
 
+	onToggleProp = (id, prop) =>{
+		this.setState(({data}) =>({
+			data: data.map(item => (item.id === id) ? {...item, [prop]: !item[prop]} : item)
+		}))
+	};
+
 	render(){
 		const {data} = this.state;
+		const employees = this.state.data.length;
+		const increased = this.state.data.filter(item => item.increase).length;
 
 		return(
 			<div className='app'>
-				<AppInfo/>
+				<AppInfo
+						employees={employees}
+						increased={increased}/>
 				<div className='search-panel'>
 					<SearchPanel/>
 					<AppFilter/>
 				</div>
-				<EmployeesList data={data} onDelete={this.deleteItem}/>
+				<EmployeesList 
+						data={data} 
+						onDelete={this.deleteItem} 
+						onToggleProp={this.onToggleProp}/>
 				<EmployeesAddForm onAdd={this.addItem}/>
 			</div>
 		)
